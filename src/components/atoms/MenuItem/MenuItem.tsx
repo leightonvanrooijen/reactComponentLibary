@@ -53,7 +53,7 @@ export const MenuItem = ({
   children,
 }: MenuItemProps) => {
   return (
-    <StyledMenuItem onClick={onClick} disabled={disabled}>
+    <StyledMenuItem role={"menuitem"} onClick={onClick} disabled={disabled}>
       {leftIcon && (
         <div style={{ marginRight: 6 }}>
           <Icon icon={leftIcon} />

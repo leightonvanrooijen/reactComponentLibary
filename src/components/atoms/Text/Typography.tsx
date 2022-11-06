@@ -16,5 +16,9 @@ export const StyledTypography = styled("p")<TypographyProps>`
 `
 
 export const Typography: React.FC<TypographyProps> = (props: TypographyProps) => {
-  return <StyledTypography variant={props.variant}>{props.children}</StyledTypography>
+  return (
+    <StyledTypography role={"dialog"} variant={props.variant}>
+      {props.children}
+    </StyledTypography>
+  )
 }

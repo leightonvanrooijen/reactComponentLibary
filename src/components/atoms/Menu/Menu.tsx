@@ -26,7 +26,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
   ({ top, left, width, strategy, children, isOpen }: MenuProps, ref) => {
     return (
       <PopOver isOpen={isOpen} top={top ? top + 2 : 0} left={left ?? 0} width={width} strategy={strategy} ref={ref}>
-        <StyledMenu>{children}</StyledMenu>
+        <StyledMenu role={"menu"}>{children}</StyledMenu>
       </PopOver>
     )
   },

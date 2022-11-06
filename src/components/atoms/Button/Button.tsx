@@ -84,7 +84,7 @@ const getTypographyVariant = (variant: ButtonSizes): TypographyVariants => {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ onClick, disabled = false, variant = "Primary", size = "Medium", leftIcon, rightIcon, children }, ref) => {
     return (
-      <StyledButton size={size} variant={variant} onClick={onClick} disabled={disabled} ref={ref}>
+      <StyledButton role={"button"} size={size} variant={variant} onClick={onClick} disabled={disabled} ref={ref}>
         <>
           {leftIcon && (
             <div style={{ marginRight: 6 }}>

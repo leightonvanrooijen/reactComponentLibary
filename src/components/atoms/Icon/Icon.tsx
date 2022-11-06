@@ -36,7 +36,7 @@ export const StyledIcon = styled("div")<StyledIconProps>`
 export const Icon: FC<IconProps> = ({ icon, size = "Medium" }) => {
   const Icon = icon
   return (
-    <StyledIcon size={size}>
+    <StyledIcon size={size} role={"img"}>
       <Icon size={"fit-content"} />
     </StyledIcon>
   )
