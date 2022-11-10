@@ -7,7 +7,7 @@ export default {
   component: DropdownButton,
 } as ComponentMeta<typeof DropdownButton>
 
-export const Template: ComponentStory<typeof DropdownButton> = (args) => <DropdownButton {...args} />
+const Template: ComponentStory<typeof DropdownButton> = (args) => <DropdownButton {...args} />
 
 export const Default = Template.bind({})
 Default.args = {

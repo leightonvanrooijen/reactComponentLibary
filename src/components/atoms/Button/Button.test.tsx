@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from "./Button"
 import { render } from "@testing-library/react"
 import { ReactNode } from "react"
-import { TestProvider } from "../Text/Typography.test"
+import { TestProvider } from "../../../common/testUtils/TestProvider"
 
 type PartialProps = Partial<ButtonProps> & { children?: ReactNode }
 

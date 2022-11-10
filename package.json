@@ -18,6 +18,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
+    "kill": "kill -9 $(lsof -ti:6006)",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -29,7 +30,7 @@
     "overrides": [
       {
         "files": [
-          "**/*.stories.*"
+          "**/*.(stories|interactions).*"
         ],
         "rules": {
           "import/no-anonymous-default-export": "off"
@@ -57,6 +58,7 @@
     "@storybook/addon-links": "^6.5.12",
     "@storybook/addons": "^6.5.13",
     "@storybook/builder-webpack5": "^6.5.12",
+    "@storybook/jest": "^0.0.10",
     "@storybook/manager-webpack5": "^6.5.12",
     "@storybook/node-logger": "^6.5.12",
     "@storybook/preset-create-react-app": "^4.1.2",

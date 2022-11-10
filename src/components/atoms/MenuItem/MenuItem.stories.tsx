@@ -7,7 +7,7 @@ export default {
   component: MenuItem,
 } as ComponentMeta<typeof MenuItem>
 
-export const Template: ComponentStory<typeof MenuItem> = (args) => <MenuItem {...args} />
+const Template: ComponentStory<typeof MenuItem> = (args) => <MenuItem {...args} />
 
 export const Default = Template.bind({})
 Default.args = {

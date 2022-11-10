@@ -1,0 +1,117 @@
+import styled from "styled-components"
+import { StyledTypography, Typography } from "../Text/Typography"
+import { FormEvent, forwardRef, RefObject, useRef } from "react"
+import { IconButton } from "../IconButton/IconButton"
+import { Icon } from "../Icon/Icon"
+import { MdClear } from "react-icons/all"
+
+const StyledInputDiv = styled("div")`
+  position: relative;
+  display: flex;
+  align-items: end;
+
+  height: 40px;
+  width: max(200px, 100px);
+  padding: 4px 16px;
+
+  border-radius: 2px;
+
+  background-color: ${({ theme }) => theme.color.menuFill};
+
+  :focus {
+    background-color: ${({ theme }) => theme.color.menuFillHover};
+    outline: none;
+  }
+`
+
+const StyledLabelDiv = styled("div")`
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 14px;
+  transition: top 0.3s ease;
+
+  ${StyledTypography} {
+    transition: font-size 0.3s;
+  }
+`
+
+export const StyledTextInput = styled("input")`
+  font-size: 16px;
+  padding: 0;
+
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  background-color: transparent;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  :focus {
+    outline: none;
+  }
+
+  // Label transition
+  :focus + div,
+  :not(:placeholder-shown) + div {
+    top: 0;
+    transition: top 0.3s;
+
+    ${StyledTypography} {
+      font-size: 14px;
+      transition: font-size 0.3s ease-in;
+    }
+  }
+`
+
+export type TextInputProps = {
+  label: string
+  defaultValue?: string
+  autoComplete?: Boolean
+  onClick?: () => void
+  onInputChange?: (event: FormEvent<HTMLInputElement>) => void
+}
+
+const clearValue = (inputRef: RefObject<HTMLInputElement>) => () => {
+  if (inputRef.current?.value) {
+    inputRef.current.value = ""
+  }
+}
+
+export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
+  ({ label, defaultValue, autoComplete, onClick, onInputChange }: TextInputProps, ref) => {
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    return (
+      <StyledInputDiv
+        onClick={() => {
+          inputRef.current?.focus()
+          if (onClick) onClick()
+        }}
+        onMouseDown={(event) => {
+          event.preventDefault()
+        }}
+        ref={ref}
+      >
+        <StyledTextInput
+          role={"textbox"}
+          ref={inputRef}
+          placeholder={" "}
+          defaultValue={defaultValue}
+          onInput={onInputChange}
+          autoComplete={autoComplete ? "on" : "off"}
+        />
+        <StyledLabelDiv>
+          <Typography>{label}</Typography>
+        </StyledLabelDiv>
+        {autoComplete && (
+          <IconButton onClick={clearValue(inputRef)}>
+            <Icon icon={MdClear} />
+          </IconButton>
+        )}
+      </StyledInputDiv>
+    )
+  },
+)

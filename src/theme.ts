@@ -47,9 +47,12 @@ const themePrimitives = Object.freeze({
 
   primary300: "#67dcd5",
   primary400: "#5ec5bf",
-  primary500: "#2AAAA4FF",
-  primary600: "#2AAAA4E5",
+  primary500: "#2aaaa4",
+  primary600: "#2AAAA4",
   primary700: "#007a75",
+
+  transparent: "#FFFFFF00",
+  transparent200: "#FFFFFF20",
 })
 
 const color = Object.freeze({
@@ -64,6 +67,10 @@ const color = Object.freeze({
   buttonDisabledText: themePrimitives.gray600,
   buttonDisabledActiveFill: themePrimitives.gray700,
   buttonDisabledActiveText: themePrimitives.gray100,
+
+  // Icon Buttons
+  iconButtonFill: themePrimitives.transparent,
+  iconButtonText: themePrimitives.primary500,
 
   // Menu
   menuFill: themePrimitives.gray100,

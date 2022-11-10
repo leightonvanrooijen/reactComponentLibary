@@ -11,7 +11,6 @@ export type IconProps = {
 
 export const getIconSizeCSS = (size: IconSizes) => {
   if (size === "Small") {
-    // TODO change
     return css`
       height: 0.875rem;
       width: 0.875rem;
@@ -31,6 +30,10 @@ export const StyledIcon = styled("div")<StyledIconProps>`
   justify-content: center;
 
   ${(props) => getIconSizeCSS(props.size)}
+  svg {
+    height: fit-content;
+    width: fit-content;
+  }
 `
 
 export const Icon: FC<IconProps> = ({ icon, size = "Medium" }) => {

@@ -5,6 +5,7 @@ import { DEFAULT_TYPOGRAPHY_VARIANT, TypographyVariants } from "../../../theme"
 export type TypographyProps = {
   children: string
   variant?: TypographyVariants
+  className?: string
 }
 
 export const StyledTypography = styled("p")<TypographyProps>`

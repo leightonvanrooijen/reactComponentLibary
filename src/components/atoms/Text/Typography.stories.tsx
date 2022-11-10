@@ -6,7 +6,7 @@ export default {
   component: Typography,
 } as ComponentMeta<typeof Typography>
 
-export const Template: ComponentStory<typeof Typography> = (args) => <Typography {...args} />
+const Template: ComponentStory<typeof Typography> = (args) => <Typography {...args} />
 
 export const BodyMedium = Template.bind({})
 BodyMedium.args = { children: "Some example text! Yay", variant: "bodyMedium" }

@@ -6,6 +6,7 @@ import { ButtonSizes, ButtonVariants } from "../Button/Button"
 import { Typography } from "../Text/Typography"
 
 export type MenuItemProps = {
+  id?: string
   onClick: MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
   variant?: ButtonVariants
@@ -44,6 +45,7 @@ export const StyledMenuItem = styled("button")`
 `
 
 export const MenuItem = ({
+  id,
   onClick,
   disabled = false,
   variant = "Primary",
@@ -53,7 +55,7 @@ export const MenuItem = ({
   children,
 }: MenuItemProps) => {
   return (
-    <StyledMenuItem role={"menuitem"} onClick={onClick} disabled={disabled}>
+    <StyledMenuItem id={id ?? children} role={"menuitem"} onClick={onClick} disabled={disabled}>
       {leftIcon && (
         <div style={{ marginRight: 6 }}>
           <Icon icon={leftIcon} />

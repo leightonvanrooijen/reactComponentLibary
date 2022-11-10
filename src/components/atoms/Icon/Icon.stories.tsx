@@ -7,7 +7,7 @@ export default {
   component: Icon,
 } as ComponentMeta<typeof Icon>
 
-export const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />
+const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />
 
 export const Small = Template.bind({})
 Small.args = { icon: FaTractor, size: "Small" }

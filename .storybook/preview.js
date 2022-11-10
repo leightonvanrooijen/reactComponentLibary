@@ -9,6 +9,18 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  backgrounds: {
+    values: [
+      {
+        name: "twitter",
+        value: "#00aced",
+      },
+      {
+        name: "facebook",
+        value: "#3b5998",
+      },
+    ],
+  },
 }
 
 export const decorators = [
