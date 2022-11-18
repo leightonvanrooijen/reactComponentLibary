@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import { StyledTypography, Typography } from "../Text/Typography"
-import { FormEvent, forwardRef, RefObject, useRef } from "react"
+import { ChangeEvent, FormEvent, forwardRef, RefObject, useEffect, useRef } from "react"
 import { IconButton } from "../IconButton/IconButton"
 import { Icon } from "../Icon/Icon"
-import { MdClear } from "react-icons/all"
+import { MdClear } from "react-icons/md"
 
 const StyledInputDiv = styled("div")`
   position: relative;
@@ -18,9 +18,12 @@ const StyledInputDiv = styled("div")`
 
   background-color: ${({ theme }) => theme.color.menuFill};
 
-  :focus {
+  :hover {
     background-color: ${({ theme }) => theme.color.menuFillHover};
-    outline: none;
+  }
+
+  :focus-within {
+    border-bottom: 1px solid ${({ theme }) => theme.color.focusOutline};
   }
 `
 
@@ -33,6 +36,7 @@ const StyledLabelDiv = styled("div")`
 
   ${StyledTypography} {
     transition: font-size 0.3s;
+    color: ${({ theme }) => theme.color.labelPrimary};
   }
 `
 
@@ -64,25 +68,48 @@ export const StyledTextInput = styled("input")`
       transition: font-size 0.3s ease-in;
     }
   }
+
+  :placeholder-shown ~ button {
+    display: none;
+  }
+
+  :not(:placeholder-shown) ~ button {
+    display: block;
+  }
 `
 
 export type TextInputProps = {
   label: string
+  value?: string
   defaultValue?: string
   autoComplete?: Boolean
+  clearable?: Boolean
   onClick?: () => void
   onInputChange?: (event: FormEvent<HTMLInputElement>) => void
+  onChange?: (event: ChangeEvent) => void
 }
 
 const clearValue = (inputRef: RefObject<HTMLInputElement>) => () => {
   if (inputRef.current?.value) {
     inputRef.current.value = ""
+    inputRef.current.dispatchEvent(new Event("input", { bubbles: true }))
   }
 }
 
-export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
-  ({ label, defaultValue, autoComplete, onClick, onInputChange }: TextInputProps, ref) => {
+const updateValue = (value: string | undefined, inputRef: RefObject<HTMLInputElement>) => {
+  if (inputRef.current && value) {
+    inputRef.current.value = value
+    inputRef.current.dispatchEvent(new Event("input", { bubbles: true }))
+  }
+}
+
+export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+  ({ label, defaultValue, autoComplete, onClick, onInputChange, onChange, value, clearable }: TextInputProps, ref) => {
     const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+      updateValue(value, inputRef)
+    }, [value])
 
     return (
       <StyledInputDiv
@@ -101,12 +128,13 @@ export const TextInput = forwardRef<HTMLDivElement, TextInputProps>(
           placeholder={" "}
           defaultValue={defaultValue}
           onInput={onInputChange}
+          onChange={onChange}
           autoComplete={autoComplete ? "on" : "off"}
         />
         <StyledLabelDiv>
           <Typography>{label}</Typography>
         </StyledLabelDiv>
-        {autoComplete && (
+        {clearable && (
           <IconButton onClick={clearValue(inputRef)}>
             <Icon icon={MdClear} />
           </IconButton>

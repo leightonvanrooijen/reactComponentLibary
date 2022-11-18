@@ -3,23 +3,26 @@ import styled from "styled-components"
 import { DEFAULT_TYPOGRAPHY_VARIANT, TypographyVariants } from "../../../theme"
 
 export type TypographyProps = {
-  children: string
+  color?: string
   variant?: TypographyVariants
+  children: string
   className?: string
 }
 
 export const StyledTypography = styled("p")<TypographyProps>`
   margin: 0;
 
-  font-size: ${(props) => props.theme.typography[props.variant ?? DEFAULT_TYPOGRAPHY_VARIANT].fontSize};
-  font-weight: ${(props) => props.theme.typography[props.variant ?? DEFAULT_TYPOGRAPHY_VARIANT].fontWeight};
-  line-height: ${(props) => props.theme.typography[props.variant ?? DEFAULT_TYPOGRAPHY_VARIANT].lineHeight};
+  font-size: ${({ theme, color }) => color ?? theme.color.typographyPrimary};
+
+  font-size: ${({ theme, variant }) => theme.typography[variant ?? DEFAULT_TYPOGRAPHY_VARIANT].fontSize};
+  font-weight: ${({ theme, variant }) => theme.typography[variant ?? DEFAULT_TYPOGRAPHY_VARIANT].fontWeight};
+  line-height: ${({ theme, variant }) => theme.typography[variant ?? DEFAULT_TYPOGRAPHY_VARIANT].lineHeight};
 `
 
-export const Typography: React.FC<TypographyProps> = (props: TypographyProps) => {
+export const Typography: React.FC<TypographyProps> = ({ color, variant, children, className }: TypographyProps) => {
   return (
-    <StyledTypography role={"dialog"} variant={props.variant}>
-      {props.children}
+    <StyledTypography role={"dialog"} variant={variant} color={color} className={className}>
+      {children}
     </StyledTypography>
   )
 }

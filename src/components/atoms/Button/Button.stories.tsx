@@ -1,6 +1,6 @@
 import { ComponentMeta } from "@storybook/react"
 import { Button } from "./Button"
-import { FaChevronDown, FaTrash } from "react-icons/all"
+import { FaChevronDown, FaTrash } from "react-icons/fa"
 
 export default {
   title: "atoms/Button",

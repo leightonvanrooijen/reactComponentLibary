@@ -1,5 +1,5 @@
 import { ComponentMeta } from "@storybook/react"
-import { FaTimes } from "react-icons/all"
+import { FaTimes } from "react-icons/fa"
 import { IconButton } from "./IconButton"
 import { Icon } from "../Icon/Icon"
 

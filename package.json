@@ -78,6 +78,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "jest-environment-jsdom": "^29.3.1",
     "prettier": "^2.4.1",
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
@@ -87,6 +88,8 @@
     "stylelint-config-standard": "^29.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.10.0",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
     "webpack": "^5.74.0"
   }
 }

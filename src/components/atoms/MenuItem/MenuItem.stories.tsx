@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react"
 import { MenuItem } from "./MenuItem"
-import { FaClipboard, FaTractor } from "react-icons/all"
+import { FaClipboard, FaTractor } from "react-icons/fa"
 
 export default {
   title: "atoms/Menu Item",

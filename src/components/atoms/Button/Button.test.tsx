@@ -1,11 +1,8 @@
 import { Button, ButtonProps } from "./Button"
 import { render } from "@testing-library/react"
-import { ReactNode } from "react"
 import { TestProvider } from "../../../common/testUtils/TestProvider"
 
-type PartialProps = Partial<ButtonProps> & { children?: ReactNode }
-
-const setUp = ({ onClick = jest.fn(), disabled, children = "Hello" }: PartialProps) => (
+const setUp = ({ onClick = jest.fn(), disabled, children = "Hello" }: Partial<ButtonProps>) => (
   <TestProvider withTheme>
     <Button onClick={onClick} disabled={disabled}>
       {children}

@@ -1,10 +1,9 @@
 import React, { ReactNode, useState } from "react"
-import { autoUpdate, useFloating } from "@floating-ui/react-dom"
 import styled from "styled-components"
 import { Button, ButtonSizes } from "../../atoms/Button/Button"
-import { FaChevronDown } from "react-icons/all"
+import { FaChevronDown } from "react-icons/fa"
 import { Menu } from "../../atoms/Menu/Menu"
-import { setPopoverToParentWidth } from "../../../common/utils/popOver/setPopoverToParentWidth"
+import { usePopOver } from "../../../common/popOver/usePopOver"
 
 type DropdownButtonProps = {
   children: string
@@ -22,11 +21,7 @@ const StyledDiv = styled("div")`
 
 export const DropdownButton = ({ size, menuWith, menuItems, children }: DropdownButtonProps) => {
   const [open, setOpen] = useState(false)
-  const { x, y, reference, floating, strategy } = useFloating<HTMLButtonElement>({
-    placement: "bottom-start",
-    whileElementsMounted: autoUpdate,
-    middleware: [setPopoverToParentWidth()],
-  })
+  const { reference, floating } = usePopOver<HTMLButtonElement>()
 
   return (
     <StyledDiv>
@@ -40,7 +35,7 @@ export const DropdownButton = ({ size, menuWith, menuItems, children }: Dropdown
       >
         {children}
       </Button>
-      <Menu isOpen={open} top={y ? y + 2 : 0} left={x ?? 0} width={menuWith} strategy={strategy} ref={floating}>
+      <Menu isOpen={open} width={menuWith} strategy={"absolute"} ref={floating}>
         <ul style={{ padding: 0, margin: 0 }}>{menuItems}</ul>
       </Menu>
     </StyledDiv>

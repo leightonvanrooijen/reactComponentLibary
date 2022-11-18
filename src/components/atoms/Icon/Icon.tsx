@@ -24,23 +24,19 @@ export const getIconSizeCSS = (size: IconSizes) => {
 
 export type StyledIconProps = Required<Omit<IconProps, "icon">>
 
-export const StyledIcon = styled("div")<StyledIconProps>`
+export const StyledIconDiv = styled("div")<StyledIconProps>`
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${(props) => getIconSizeCSS(props.size)}
-  svg {
-    height: fit-content;
-    width: fit-content;
-  }
 `
 
 export const Icon: FC<IconProps> = ({ icon, size = "Medium" }) => {
-  const Icon = icon
+  const SvgIcon = icon
   return (
-    <StyledIcon size={size} role={"img"}>
-      <Icon size={"fit-content"} />
-    </StyledIcon>
+    <StyledIconDiv size={size} role={"img"}>
+      <SvgIcon height={"fit-content"} width={"fit-content"} />
+    </StyledIconDiv>
   )
 }

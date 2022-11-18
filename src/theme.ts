@@ -53,6 +53,8 @@ const themePrimitives = Object.freeze({
 
   transparent: "#FFFFFF00",
   transparent200: "#FFFFFF20",
+
+  blue: "blue",
 })
 
 const color = Object.freeze({
@@ -80,6 +82,13 @@ const color = Object.freeze({
   menuFontHighlighted: themePrimitives.gray900,
   menuFontSelected: themePrimitives.gray900,
   menuFillDisabled: themePrimitives.gray200,
+
+  // Typography
+  typographyPrimary: themePrimitives.black,
+  labelPrimary: themePrimitives.primary500,
+
+  // Accessibility
+  focusOutline: themePrimitives.blue,
 })
 
 export const defaultTheme = { typography: { ...typography }, color: { ...color }, lighting: { ...lighting } }

@@ -4,8 +4,6 @@ import { PopOver } from "../Popover/PopOver"
 
 export type MenuProps = {
   isOpen: boolean
-  top: number
-  left: number
   width?: string
   strategy: "absolute" | "fixed"
   children: ReactNode
@@ -22,12 +20,10 @@ export const StyledMenu = styled("div")<Partial<MenuProps>>`
   box-shadow: ${({ theme }) => theme.lighting.menuShadow};
 `
 
-export const Menu = forwardRef<HTMLDivElement, MenuProps>(
-  ({ top, left, width, strategy, children, isOpen }: MenuProps, ref) => {
-    return (
-      <PopOver isOpen={isOpen} top={top ? top + 2 : 0} left={left ?? 0} width={width} strategy={strategy} ref={ref}>
-        <StyledMenu role={"menu"}>{children}</StyledMenu>
-      </PopOver>
-    )
-  },
-)
+export const Menu = forwardRef<HTMLDivElement, MenuProps>(({ strategy, children, isOpen, width }: MenuProps, ref) => {
+  return (
+    <PopOver isOpen={isOpen} strategy={strategy} width={width} ref={ref}>
+      <StyledMenu role={"menu"}>{children}</StyledMenu>
+    </PopOver>
+  )
+})

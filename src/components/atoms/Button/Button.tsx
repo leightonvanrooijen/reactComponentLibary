@@ -4,8 +4,7 @@ import { IconType } from "react-icons"
 import { Icon } from "../Icon/Icon"
 import { Typography } from "../Text/Typography"
 import { TypographyVariants } from "../../../theme"
-import { Simulate } from "react-dom/test-utils"
-import submit = Simulate.submit
+import { getFocusAccessibilityCss } from "../../../common/sharredCss/getFocusAccessibilityCss"
 
 export type ButtonSizes = "Small" | "Medium"
 export type ButtonVariants = "Primary"
@@ -70,6 +69,8 @@ export const StyledButton = styled("button")<StyledButton>`
   :active {
     background-color: ${(props) => props.theme.color[`button${props.variant}Active`]};
   }
+
+  ${({ theme }) => getFocusAccessibilityCss(theme)}
 `
 
 const getTypographyVariant = (variant: ButtonSizes): TypographyVariants => {

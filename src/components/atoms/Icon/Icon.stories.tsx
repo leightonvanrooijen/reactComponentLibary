@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react"
 import { Icon } from "./Icon"
-import { FaTractor } from "react-icons/all"
+import { FaTractor } from "react-icons/fa"
 
 export default {
   title: "atoms/Icon",

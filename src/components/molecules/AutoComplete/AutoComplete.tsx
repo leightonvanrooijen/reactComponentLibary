@@ -1,10 +1,9 @@
 import { TextInput } from "../../atoms/TextInput/TextInput"
-import React, { useEffect, useState } from "react"
-import { autoUpdate, useFloating } from "@floating-ui/react-dom"
+import React, { Dispatch, useEffect, useState } from "react"
 import { Menu } from "../../atoms/Menu/Menu"
 import styled from "styled-components"
-import { setPopoverToParentWidth } from "../../../common/utils/popOver/setPopoverToParentWidth"
 import { MenuItem } from "../../atoms/MenuItem/MenuItem"
+import { usePopOver } from "../../../common/popOver/usePopOver"
 
 export type Option = {
   label: string
@@ -13,7 +12,9 @@ export type Option = {
 }
 
 export type AutoCompleteProps = {
+  label: string
   options: Option[]
+  defaultOption?: Option
 }
 
 const StyledDiv = styled("div")`
@@ -21,69 +22,63 @@ const StyledDiv = styled("div")`
   position: relative;
 
   box-sizing: border-box;
+
+  top: 200px;
+  left: 300px;
 `
 
-export type OptionProps = { options: Option[] }
+export type OptionProps = { options: Option[]; setSelected: Dispatch<Option> }
 
-export const MenuOptionsList = ({ options }: OptionProps) => {
+export const filterOptions = (
+  options: Option[],
+  currentTarget: EventTarget & HTMLInputElement,
+  setFilteredOptions: Dispatch<Option[]>,
+) => {
+  const matchingOptions = options.filter(({ label, subLabel }) => {
+    return (
+      label.toLowerCase().includes(currentTarget.value.toLowerCase()) ||
+      subLabel?.toLowerCase().includes(currentTarget.value.toLowerCase())
+    )
+  })
+  setFilteredOptions(matchingOptions)
+}
+
+export const MenuOptionsList = ({ options, setSelected }: OptionProps) => {
   const items = options.map((option) => (
-    <MenuItem onClick={() => undefined} id={option.id}>
+    <MenuItem onClick={() => setSelected(option)} id={option.id} key={option.id}>
       {option.label}
     </MenuItem>
   ))
   return <ul style={{ padding: 0, margin: 0 }}>{items}</ul>
 }
 
-function assertIsNode(e: EventTarget | null): asserts e is Node {
-  if (!e || !("nodeType" in e)) {
-    throw new Error(`Node expected`)
-  }
-}
-
-export type PopperRefs = {
-  reference: React.MutableRefObject<HTMLDivElement | null>
-  floating: React.MutableRefObject<HTMLElement | null>
-}
-
-export const AutoComplete = ({ options }: AutoCompleteProps) => {
-  const [open, setOpen] = useState(false)
-  const { x, y, reference, floating, strategy, refs } = useFloating<HTMLDivElement>({
-    placement: "bottom-start",
-    whileElementsMounted: autoUpdate,
-    middleware: [setPopoverToParentWidth()],
-  })
+export const AutoComplete = ({ label, options, defaultOption }: AutoCompleteProps) => {
+  const [filteredOptions, setFilteredOptions] = useState(options)
+  const [selected, setSelected] = useState<Option | undefined>(defaultOption)
+  const [inputValue, setInputValue] = useState<string | undefined>("")
+  const { reference, floating, open, setOpen } = usePopOver<HTMLInputElement>()
 
   useEffect(() => {
-    const closeMenu = (event: MouseEvent) => {
-      assertIsNode(event.target)
-      if (shouldClosePopOver(refs, event.target)) {
-        setOpen(false)
-      }
-    }
-
-    document.addEventListener("mousedown", closeMenu)
-
-    return () => document.removeEventListener("mousedown", closeMenu)
-  }, [refs])
+    setOpen(false)
+    setInputValue(selected?.label)
+  }, [selected])
 
   return (
     <StyledDiv>
       <TextInput
-        label={"Label"}
+        label={label}
+        value={inputValue}
         onClick={() => setOpen(true)}
         ref={reference}
-        autoComplete
-        onInputChange={(event) => {
-          console.log(event.currentTarget.value)
+        clearable
+        onInputChange={({ currentTarget }) => {
+          filterOptions(options, currentTarget, setFilteredOptions)
+          setSelected(undefined)
         }}
       />
-      <Menu isOpen={open} top={y ? y + 2 : 0} left={x ?? 0} width={"hi"} strategy={strategy} ref={floating}>
-        <MenuOptionsList options={options} />
+      <Menu isOpen={open} strategy={"absolute"} ref={floating}>
+        <MenuOptionsList options={filteredOptions} setSelected={setSelected} />
       </Menu>
     </StyledDiv>
   )
-}
-
-function shouldClosePopOver(refs: PopperRefs, target: Node) {
-  return Boolean(!refs.reference?.current?.contains(target) && !refs.floating?.current?.contains(target))
 }
