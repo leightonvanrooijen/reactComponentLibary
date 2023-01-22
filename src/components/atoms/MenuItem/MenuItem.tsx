@@ -55,18 +55,20 @@ export const MenuItem = ({
   children,
 }: MenuItemProps) => {
   return (
-    <StyledMenuItem id={id ?? children} role={"menuitem"} onClick={onClick} disabled={disabled}>
-      {leftIcon && (
-        <div style={{ marginRight: 6 }}>
-          <Icon icon={leftIcon} />
-        </div>
-      )}
-      <Typography>{children}</Typography>
-      {rightIcon && (
-        <StyledRightIcon>
-          <Icon icon={rightIcon} />
-        </StyledRightIcon>
-      )}
-    </StyledMenuItem>
+    <div role={"menuitem"}>
+      <StyledMenuItem id={id ?? children} role={"button"} onClick={onClick} disabled={disabled}>
+        {leftIcon && (
+          <div style={{ marginRight: 6 }}>
+            <Icon icon={leftIcon} />
+          </div>
+        )}
+        <Typography>{children}</Typography>
+        {rightIcon && (
+          <StyledRightIcon>
+            <Icon icon={rightIcon} />
+          </StyledRightIcon>
+        )}
+      </StyledMenuItem>
+    </div>
   )
 }

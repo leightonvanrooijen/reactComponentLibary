@@ -36,7 +36,7 @@ export const DropdownButton = ({ size, menuWith, menuItems, children }: Dropdown
         {children}
       </Button>
       <Menu isOpen={open} width={menuWith} strategy={"absolute"} ref={floating}>
-        <ul style={{ padding: 0, margin: 0 }}>{menuItems}</ul>
+        {menuItems}
       </Menu>
     </StyledDiv>
   )

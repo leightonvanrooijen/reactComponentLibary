@@ -10,7 +10,7 @@ const StyledInputDiv = styled("div")`
   display: flex;
   align-items: end;
 
-  height: 40px;
+  height: 36px;
   width: max(200px, 100px);
   padding: 4px 16px;
 
@@ -31,7 +31,7 @@ const StyledLabelDiv = styled("div")`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  font-size: 14px;
+  font-size: 12px;
   transition: top 0.3s ease;
 
   ${StyledTypography} {
@@ -49,6 +49,7 @@ export const StyledTextInput = styled("input")`
   border: none;
   background-color: transparent;
 
+  // overflow test shows '...' at the end
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -64,17 +65,18 @@ export const StyledTextInput = styled("input")`
     transition: top 0.3s;
 
     ${StyledTypography} {
-      font-size: 14px;
+      font-size: 12px;
       transition: font-size 0.3s ease-in;
     }
   }
 
+  // clear input icon
   :placeholder-shown ~ button {
     display: none;
   }
 
   :not(:placeholder-shown) ~ button {
-    display: block;
+    display: flex;
   }
 `
 
@@ -130,6 +132,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           onInput={onInputChange}
           onChange={onChange}
           autoComplete={autoComplete ? "on" : "off"}
+          aria-label={`${label}-input`}
         />
         <StyledLabelDiv>
           <Typography>{label}</Typography>

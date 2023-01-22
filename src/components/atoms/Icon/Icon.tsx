@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { FC } from "react"
+import { forwardRef } from "react"
 import { IconType } from "react-icons"
 
 export type IconSizes = "Small" | "Medium"
@@ -7,6 +7,7 @@ export type IconSizes = "Small" | "Medium"
 export type IconProps = {
   icon: IconType
   size?: IconSizes
+  className?: string
 }
 
 export const getIconSizeCSS = (size: IconSizes) => {
@@ -22,9 +23,7 @@ export const getIconSizeCSS = (size: IconSizes) => {
   `
 }
 
-export type StyledIconProps = Required<Omit<IconProps, "icon">>
-
-export const StyledIconDiv = styled("div")<StyledIconProps>`
+export const StyledIconDiv = styled("div")<{ size: IconSizes }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,11 +31,11 @@ export const StyledIconDiv = styled("div")<StyledIconProps>`
   ${(props) => getIconSizeCSS(props.size)}
 `
 
-export const Icon: FC<IconProps> = ({ icon, size = "Medium" }) => {
+export const Icon = forwardRef<HTMLDivElement, IconProps>(({ icon, size = "Medium", className }, ref) => {
   const SvgIcon = icon
   return (
-    <StyledIconDiv size={size} role={"img"}>
+    <StyledIconDiv size={size} role={"graphics-symbol"} className={className} ref={ref}>
       <SvgIcon height={"fit-content"} width={"fit-content"} />
     </StyledIconDiv>
   )
-}
+})

@@ -4,6 +4,7 @@ import { Menu } from "../../atoms/Menu/Menu"
 import styled from "styled-components"
 import { MenuItem } from "../../atoms/MenuItem/MenuItem"
 import { usePopOver } from "../../../common/popOver/usePopOver"
+import { filterOptions } from "./utils/filterOptions"
 
 export type Option = {
   label: string
@@ -22,34 +23,18 @@ const StyledDiv = styled("div")`
   position: relative;
 
   box-sizing: border-box;
-
-  top: 200px;
-  left: 300px;
 `
 
 export type OptionProps = { options: Option[]; setSelected: Dispatch<Option> }
 
-export const filterOptions = (
-  options: Option[],
-  currentTarget: EventTarget & HTMLInputElement,
-  setFilteredOptions: Dispatch<Option[]>,
-) => {
-  const matchingOptions = options.filter(({ label, subLabel }) => {
-    return (
-      label.toLowerCase().includes(currentTarget.value.toLowerCase()) ||
-      subLabel?.toLowerCase().includes(currentTarget.value.toLowerCase())
-    )
-  })
-  setFilteredOptions(matchingOptions)
-}
-
-export const MenuOptionsList = ({ options, setSelected }: OptionProps) => {
-  const items = options.map((option) => (
+export const MenuOptions = ({ options, setSelected }: OptionProps) => {
+  const menuItems = options.map((option) => (
     <MenuItem onClick={() => setSelected(option)} id={option.id} key={option.id}>
       {option.label}
     </MenuItem>
   ))
-  return <ul style={{ padding: 0, margin: 0 }}>{items}</ul>
+
+  return <>{menuItems}</>
 }
 
 export const AutoComplete = ({ label, options, defaultOption }: AutoCompleteProps) => {
@@ -72,12 +57,12 @@ export const AutoComplete = ({ label, options, defaultOption }: AutoCompleteProp
         ref={reference}
         clearable
         onInputChange={({ currentTarget }) => {
-          filterOptions(options, currentTarget, setFilteredOptions)
+          setFilteredOptions(filterOptions(options, currentTarget.value))
           setSelected(undefined)
         }}
       />
       <Menu isOpen={open} strategy={"absolute"} ref={floating}>
-        <MenuOptionsList options={filteredOptions} setSelected={setSelected} />
+        <MenuOptions options={filteredOptions} setSelected={setSelected} />
       </Menu>
     </StyledDiv>
   )

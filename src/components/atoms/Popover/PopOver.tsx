@@ -21,7 +21,14 @@ export const PopOver = forwardRef<HTMLDivElement, PopOverProps>(
   ({ width, strategy, children, isOpen }: PopOverProps, ref) => {
     if (isOpen) {
       return (
-        <StyledPopOver ref={ref} isOpen={isOpen} width={width} role={"popover"}>
+        <StyledPopOver
+          ref={ref}
+          isOpen={isOpen}
+          width={width}
+          onMouseDown={(event) => {
+            event.preventDefault()
+          }}
+        >
           {children}
         </StyledPopOver>
       )

@@ -1,12 +1,45 @@
 import { MutableRefObject, useCallback, useEffect, useRef, useState } from "react"
-import { calculatePositionOffSets } from "./calculatePositionOffSets"
 import { useShowPopOver } from "./useShowPopOver"
+import { hasElement } from "./hasElement"
+import { updateFloatPosition } from "./updateFloatPosition"
+import { useUpdatePositionOnScroll } from "./useUpdatePositionOnScroll"
+
+// TODO work out how to move all the ref has element assertions to a higher level
 
 export type PopOverPositions = "left" | "top" | "right" | "bottom"
 
 export type UsePopOverProps = {
   position?: PopOverPositions
   matchWidths?: boolean
+}
+
+export type PositionProps<RT extends Element> = {
+  position: PopOverPositions
+  reference: MutableRefObject<RT | null>
+  float: MutableRefObject<HTMLElement | null>
+}
+
+// Naming is unclear
+const useOnOpen = (float: MutableRefObject<HTMLElement | null>, open: boolean) => {
+  useEffect(() => {
+    if (!float.current?.firstElementChild) return
+
+    if (open) {
+      float.current.firstElementChild.ariaExpanded = "true"
+    }
+
+    float.current.firstElementChild.ariaExpanded = "false"
+  }, [open])
+}
+
+const setFloatToRefWidth = <RT extends Element>(
+  reference: MutableRefObject<RT | null>,
+  float: MutableRefObject<HTMLElement | null>,
+) => {
+  if (!hasElement(reference) || !hasElement(float)) return
+
+  const { width } = reference.current.getBoundingClientRect()
+  float.current.style.width = `${width}px`
 }
 
 export const usePopOver = <RT extends Element>({ position = "bottom", matchWidths = true }: UsePopOverProps = {}) => {
@@ -16,52 +49,25 @@ export const usePopOver = <RT extends Element>({ position = "bottom", matchWidth
   const [open, setOpen] = useState(false)
 
   useShowPopOver({ ref, float, setOpen })
+  useOnOpen(float, open)
+  useUpdatePositionOnScroll({ reference: ref, float, position })
 
-  const floating = useCallback(
-    (node: HTMLElement | null) => {
-      if (!node) return
-      float.current = node
+  const floating = useCallback((node: HTMLElement | null) => {
+    if (!node) return
+    float.current = node
 
-      assertRefHasElement(float)
-      assertRefHasElement(ref)
+    updateFloatPosition({ reference: ref, float, position })
 
-      const {
-        bottom: refBottom,
-        left: refLeft,
-        width: refWidth,
-        height: refHeight,
-      } = ref.current.getBoundingClientRect()
-      const { height } = node.getBoundingClientRect()
-      const { xOffSet, yOffSet } = calculatePositionOffSets({
-        position,
-        refWidth,
-        refHeight,
-        floatHeight: height,
-      })
-
-      if (matchWidths) {
-        node.style.width = `${refWidth}px`
-      }
-      node.style.left = `${refLeft + xOffSet}px`
-      node.style.top = `${refBottom + yOffSet}px`
-    },
-    [open],
-  )
+    if (matchWidths) {
+      setFloatToRefWidth(ref, float)
+    }
+  }, [])
 
   const reference = useCallback((node: RT | null) => {
     if (!node) return
     ref.current = node
+    ref.current.ariaHasPopup = "true"
   }, [])
 
-  useEffect(() => {})
-
-  return { reference, floating, open, setOpen, ref }
-}
-
-function assertRefHasElement<RT extends Element>(
-  ref: MutableRefObject<RT | null>,
-): asserts ref is MutableRefObject<RT> {
-  if (!ref.current) {
-    throw new Error(`Element expected`)
-  }
+  return { reference, floating, open, setOpen }
 }

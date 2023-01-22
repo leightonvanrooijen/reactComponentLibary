@@ -1,10 +1,14 @@
 import { TextInput } from "./TextInput"
 import { ComponentMeta } from "@storybook/react"
 
+const defaultArgs = {
+  label: "Label",
+}
+
 export default {
   title: "atoms/TextInput",
   component: TextInput,
-  args: {},
+  args: defaultArgs,
 } as ComponentMeta<typeof TextInput>
 
 export const Default = {}

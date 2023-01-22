@@ -9,15 +9,13 @@ export type UseClosePopUpProps<RT extends Element> = {
 export const useShowPopOver = <RT extends Element>({ ref, float, setOpen }: UseClosePopUpProps<RT>) => {
   useEffect(() => {
     const open = (event: FocusEvent) => {
-      assertIsNode(event.target)
-      if (shouldOpenPopOver<RT>(ref, float, event.target)) {
+      if (isNode(event.target) && shouldOpenPopOver<RT>(ref, float, event.target)) {
         setOpen(true)
       }
     }
 
     const close = (event: MouseEvent) => {
-      assertIsNode(event.target)
-      if (shouldClosePopOver<RT>(ref, float, event.target)) {
+      if (isNode(event.target) && shouldClosePopOver<RT>(ref, float, event.target)) {
         setOpen(false)
       }
     }
@@ -32,10 +30,8 @@ export const useShowPopOver = <RT extends Element>({ ref, float, setOpen }: UseC
   }, [ref, float, setOpen])
 }
 
-export function assertIsNode(e: EventTarget | null): asserts e is Node {
-  if (!e || !("nodeType" in e)) {
-    throw new Error(`Node expected`)
-  }
+export function isNode(e: EventTarget | null): e is Node {
+  return !(!e || !("nodeType" in e))
 }
 
 export function shouldClosePopOver<RT extends Element>(
