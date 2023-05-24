@@ -1,3 +1,4 @@
+import "../src/global.css"
 import { ThemeProvider } from "styled-components"
 import { defaultTheme } from "../src/theme"
 

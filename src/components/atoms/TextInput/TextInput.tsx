@@ -1,17 +1,22 @@
-import styled from "styled-components"
 import { StyledTypography, Typography } from "../Text/Typography"
 import { ChangeEvent, FormEvent, forwardRef, RefObject, useEffect, useRef } from "react"
 import { IconButton } from "../IconButton/IconButton"
 import { Icon } from "../Icon/Icon"
 import { MdClear } from "react-icons/md"
+import styled from "styled-components"
 
-const StyledInputDiv = styled("div")`
+const StyledWrapperDiv = styled("div")`
+  height: 52px;
+  width: max(200px, 100px);
+`
+
+const StyledInputDiv = styled("div")<{ state?: "Error" }>`
   position: relative;
   display: flex;
   align-items: end;
 
   height: 36px;
-  width: max(200px, 100px);
+  width: 100%;
   padding: 4px 16px;
 
   border-radius: 2px;
@@ -23,7 +28,12 @@ const StyledInputDiv = styled("div")`
   }
 
   :focus-within {
-    border-bottom: 1px solid ${({ theme }) => theme.color.focusOutline};
+    border-bottom: 1px solid ${({ theme, state }) => (state ? theme.color[`label${state}`] : theme.color.focusOutline)};
+  }
+
+  ${StyledTypography} {
+    transition: font-size 0.3s;
+    color: ${({ theme, state }) => theme.color[`label${state ?? "Primary"}`]};
   }
 `
 
@@ -33,11 +43,6 @@ const StyledLabelDiv = styled("div")`
   transform: translate(0, -50%);
   font-size: 12px;
   transition: top 0.3s ease;
-
-  ${StyledTypography} {
-    transition: font-size 0.3s;
-    color: ${({ theme }) => theme.color.labelPrimary};
-  }
 `
 
 export const StyledTextInput = styled("input")`
@@ -45,7 +50,6 @@ export const StyledTextInput = styled("input")`
   padding: 0;
 
   width: 100%;
-  box-sizing: border-box;
   border: none;
   background-color: transparent;
 
@@ -89,6 +93,11 @@ export type TextInputProps = {
   onClick?: () => void
   onInputChange?: (event: FormEvent<HTMLInputElement>) => void
   onChange?: (event: ChangeEvent) => void
+  name?: string
+  onBlur?: (event: ChangeEvent<HTMLInputElement>) => void
+  helperText?: string
+  state?: "Error"
+  required?: boolean
 }
 
 const clearValue = (inputRef: RefObject<HTMLInputElement>) => () => {
@@ -106,7 +115,24 @@ const updateValue = (value: string | undefined, inputRef: RefObject<HTMLInputEle
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ label, defaultValue, autoComplete, onClick, onInputChange, onChange, value, clearable }: TextInputProps, ref) => {
+  (
+    {
+      label,
+      defaultValue,
+      autoComplete,
+      onClick,
+      onInputChange,
+      onChange,
+      value,
+      clearable,
+      name,
+      onBlur,
+      state,
+      helperText = "\u3000", // invisible space to prevent layout shift on helper text
+      required,
+    }: TextInputProps,
+    ref,
+  ) => {
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -114,35 +140,50 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     }, [value])
 
     return (
-      <StyledInputDiv
-        onClick={() => {
-          inputRef.current?.focus()
-          if (onClick) onClick()
-        }}
-        onMouseDown={(event) => {
-          event.preventDefault()
-        }}
-        ref={ref}
-      >
-        <StyledTextInput
-          role={"textbox"}
-          ref={inputRef}
-          placeholder={" "}
-          defaultValue={defaultValue}
-          onInput={onInputChange}
-          onChange={onChange}
-          autoComplete={autoComplete ? "on" : "off"}
-          aria-label={`${label}-input`}
-        />
-        <StyledLabelDiv>
-          <Typography>{label}</Typography>
-        </StyledLabelDiv>
-        {clearable && (
-          <IconButton onClick={clearValue(inputRef)}>
-            <Icon icon={MdClear} />
-          </IconButton>
-        )}
-      </StyledInputDiv>
+      <StyledWrapperDiv>
+        <StyledInputDiv
+          onClick={(e) => {
+            e.preventDefault()
+            inputRef.current?.focus()
+            if (onClick) onClick()
+          }}
+          onMouseDown={(event) => {
+            event.preventDefault()
+          }}
+          ref={ref}
+          state={state}
+        >
+          <StyledTextInput
+            name={name}
+            role={"textbox"}
+            autoComplete={"off"}
+            ref={inputRef}
+            placeholder={" "}
+            defaultValue={defaultValue}
+            onInput={onInputChange}
+            onChange={onChange}
+            onBlur={onBlur}
+            aria-label={`${label}-input`}
+          />
+          <StyledLabelDiv>
+            <Typography>{`${label}${required ? "*" : ""}`}</Typography>
+          </StyledLabelDiv>
+          {clearable && (
+            <IconButton onClick={clearValue(inputRef)} dataTestId={"clear-button"}>
+              <Icon icon={MdClear} />
+            </IconButton>
+          )}
+        </StyledInputDiv>
+        <div
+          style={{
+            width: inputRef?.current?.getBoundingClientRect().width,
+          }}
+        >
+          <Typography variant={"bodyXSmall"} color={state}>
+            {helperText}
+          </Typography>
+        </div>
+      </StyledWrapperDiv>
     )
   },
 )

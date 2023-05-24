@@ -1,47 +1,70 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
+import { Meta, StoryObj } from "@storybook/react"
 import { MenuItem } from "./MenuItem"
 import { FaClipboard, FaTractor } from "react-icons/fa"
 
-export default {
+const meta: Meta<typeof MenuItem> = {
   title: "atoms/Menu Item",
   component: MenuItem,
-} as ComponentMeta<typeof MenuItem>
-
-const Template: ComponentStory<typeof MenuItem> = (args) => <MenuItem {...args} />
-
-export const Default = Template.bind({})
-Default.args = {
-  onClick: () => undefined,
-  children: "Text",
 }
 
-export const WithLeftIcon = Template.bind({})
-WithLeftIcon.args = {
-  onClick: () => undefined,
-  children: "Paste",
-  leftIcon: FaClipboard,
+export default meta
+type Story = StoryObj<typeof MenuItem>
+
+export const Small = {
+  args: {
+    onClick: () => undefined,
+    children: "Text",
+    size: "Small",
+  },
 }
 
-export const WithRightIcon = Template.bind({})
-WithRightIcon.args = {
-  onClick: () => undefined,
-  children: "Paste",
-  rightIcon: FaClipboard,
+export const Medium = {
+  args: {
+    onClick: () => undefined,
+    children: "Text",
+    size: "Medium",
+  },
 }
 
-export const WithBothIcons = Template.bind({})
-WithBothIcons.args = {
-  onClick: () => undefined,
-  children: "Paste",
-  leftIcon: FaClipboard,
-  rightIcon: FaTractor,
+export const WithSecondaryText = {
+  args: {
+    onClick: () => undefined,
+    secondaryText: "Secondary Text",
+    children: "Paste",
+  },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  onClick: () => undefined,
-  disabled: true,
-  children: "Paste",
-  leftIcon: FaClipboard,
-  rightIcon: FaTractor,
+export const WithLeftIcon = {
+  args: {
+    onClick: () => undefined,
+    children: "Paste",
+    leftIcon: FaClipboard,
+  },
+}
+
+export const WithRightIcon = {
+  args: {
+    onClick: () => undefined,
+    children: "Paste",
+    rightIcon: FaClipboard,
+  },
+}
+
+export const WithBothIcons = {
+  args: {
+    onClick: () => undefined,
+    children: "Paste",
+    leftIcon: FaClipboard,
+    rightIcon: FaTractor,
+  },
+}
+
+export const Disabled = {
+  args: {
+    onClick: () => undefined,
+    disabled: true,
+    children: "Paste",
+    leftIcon: FaClipboard,
+    rightIcon: FaTractor,
+  },
 }

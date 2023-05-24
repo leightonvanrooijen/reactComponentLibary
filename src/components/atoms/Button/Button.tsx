@@ -3,20 +3,21 @@ import React, { MouseEventHandler } from "react"
 import { IconType } from "react-icons"
 import { Icon } from "../Icon/Icon"
 import { Typography } from "../Text/Typography"
-import { TypographyVariants } from "../../../theme"
 import { getFocusAccessibilityCss } from "../../../common/sharredCss/getFocusAccessibilityCss"
+import { getTypographyVariant } from "../../utils/getTypographyVariant"
 
 export type ButtonSizes = "Small" | "Medium"
-export type ButtonVariants = "Primary"
+export type ButtonVariants = "Primary" | "Text"
 
 export type ButtonProps = {
-  onClick: MouseEventHandler<HTMLButtonElement>
+  onClick?: MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
   variant?: ButtonVariants
   size?: ButtonSizes
   leftIcon?: IconType
   rightIcon?: IconType
   children: string
+  type?: "button" | "submit"
 }
 
 export const getButtonSizeCSS = (size: ButtonSizes) => {
@@ -24,12 +25,14 @@ export const getButtonSizeCSS = (size: ButtonSizes) => {
     return css`
       padding: 0.375rem 0.5rem;
       font-size: 0.75rem;
+      height: 2.25rem;
     `
   }
 
   return css`
     padding: 0.375rem 1rem;
     font-size: ${(props) => props.theme.typography.bodyMedium};
+    height: 2.5rem;
   `
 }
 
@@ -43,8 +46,6 @@ export const StyledButton = styled("button")<StyledButton>`
   align-items: center;
   justify-content: center;
 
-  position: relative;
-
   background: ${(props) => props.theme.color[`button${props.variant}Fill`]};
   font: ${(props) => props.theme.color[`button${props.variant}Text`]};
 
@@ -55,15 +56,19 @@ export const StyledButton = styled("button")<StyledButton>`
   box-sizing: border-box;
 
   ${(props) => getButtonSizeCSS(props.size)}
-  :disabled {
-    background-color: ${(props) => props.theme.color.buttonDisabledFill};
-    font: ${(props) => props.theme.color.buttonDisabledText};
-    cursor: default;
-  }
 
   :hover {
     background-color: ${(props) => props.theme.color[`button${props.variant}Hover`]};
     cursor: pointer;
+  }
+
+  :disabled {
+    background-color: ${(props) => props.theme.color.buttonDisabledFill};
+    font: ${(props) => props.theme.color.buttonDisabledText};
+    cursor: default;
+    :hover {
+      background-color: ${(props) => props.theme.color.buttonDisabledFill};
+    }
   }
 
   :active {
@@ -73,17 +78,11 @@ export const StyledButton = styled("button")<StyledButton>`
   ${({ theme }) => getFocusAccessibilityCss(theme)}
 `
 
-const getTypographyVariant = (variant: ButtonSizes): TypographyVariants => {
-  switch (variant) {
-    case "Small":
-      return "bodySmall"
-    default:
-      return "bodyMedium"
-  }
-}
-
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ onClick, disabled = false, variant = "Primary", size = "Medium", leftIcon, rightIcon, children }, ref) => {
+  (
+    { onClick, disabled = false, variant = "Primary", size = "Medium", leftIcon, rightIcon, children, type = "button" },
+    ref,
+  ) => {
     return (
       <StyledButton role={"button"} size={size} variant={variant} onClick={onClick} disabled={disabled} ref={ref}>
         <>

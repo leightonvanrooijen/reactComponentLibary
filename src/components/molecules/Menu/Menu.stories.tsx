@@ -1,10 +1,10 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react"
 import { Menu } from "./Menu"
-import { MenuItem } from "../MenuItem/MenuItem"
+import { MenuItem } from "../../atoms/MenuItem/MenuItem"
 import { createRef } from "react"
 
 export default {
-  title: "atoms/Menu",
+  title: "molecules/Menu",
   component: Menu,
 } as ComponentMeta<typeof Menu>
 
@@ -17,11 +17,11 @@ const Template: ComponentStory<typeof Menu> = (args) => {
   }
 
   return (
-    <Menu isOpen={true} strategy={"absolute"} width={"150px"} ref={ref}>
-      <MenuItem onClick={() => undefined}>Item 1</MenuItem>
+    <Menu isOpen={true} strategy={"absolute"} width={"200px"} ref={ref}>
+      <MenuItem onClick={() => undefined}>Item 1 cslknc mcdnkdcn ksxmln</MenuItem>
       <MenuItem onClick={() => undefined}>Item 2</MenuItem>
     </Menu>
   )
 }
 
-export const Default = Template.bind({})
+export const Primary = Template.bind({})

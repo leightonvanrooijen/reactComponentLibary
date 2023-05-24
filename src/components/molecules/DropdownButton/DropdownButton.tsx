@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from "react"
 import styled from "styled-components"
 import { Button, ButtonSizes } from "../../atoms/Button/Button"
 import { FaChevronDown } from "react-icons/fa"
-import { Menu } from "../../atoms/Menu/Menu"
+import { Menu } from "../Menu/Menu"
 import { usePopOver } from "../../../common/popOver/usePopOver"
 
 type DropdownButtonProps = {

@@ -11,10 +11,9 @@ export type PopOverProps = {
 export const StyledPopOver = styled("div")<Partial<PopOverProps>>`
   display: ${({ isOpen }) => (isOpen ? "block" : "none")};
   position: ${({ strategy }) => (strategy ? strategy : "fixed")};
+  z-index: 10;
 
   width: ${({ width }) => width};
-
-  box-sizing: border-box;
 `
 
 export const PopOver = forwardRef<HTMLDivElement, PopOverProps>(

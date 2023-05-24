@@ -1,13 +1,13 @@
 import { Button, ButtonProps } from "./Button"
 import { render } from "@testing-library/react"
-import { TestProvider } from "../../../common/testUtils/TestProvider"
+import { MockProvider } from "../../../packages/test/MockProvider"
 
 const setUp = ({ onClick = jest.fn(), disabled, children = "Hello" }: Partial<ButtonProps>) => (
-  <TestProvider withTheme>
+  <MockProvider withTheme>
     <Button onClick={onClick} disabled={disabled}>
       {children}
     </Button>
-  </TestProvider>
+  </MockProvider>
 )
 
 describe("Button", () => {

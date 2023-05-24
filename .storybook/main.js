@@ -14,6 +14,9 @@ module.exports = {
   features: {
     interactionsDebugger: true,
   },
+  docs: {
+    autodocs: "tag",
+  },
   typescript: {
     check: true,
     checkOptions: {},

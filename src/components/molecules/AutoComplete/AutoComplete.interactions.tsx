@@ -88,7 +88,6 @@ export const ShowsDefaultOption = {
     const canvas = within(canvasElement)
 
     const textField = canvas.getByRole("textbox")
-    console.log(textField)
 
     expect(textField).toHaveValue(defaultArgs.options[0].label)
   },

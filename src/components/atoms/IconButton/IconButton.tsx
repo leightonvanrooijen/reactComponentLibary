@@ -23,12 +23,21 @@ export const StyledIconButton = styled("button")`
 
 export type IconButtonProps = {
   children: ReactNode
-  onClick: MouseEventHandler<HTMLButtonElement>
+  onClick?: MouseEventHandler<HTMLButtonElement>
+  color?: string
+  dataTestId?: string
 }
 
-export const IconButton = ({ children, onClick }: IconButtonProps) => {
+export const IconButton = ({ children, onClick, color, dataTestId }: IconButtonProps) => {
   return (
-    <StyledIconButton color={"#FF0000"} onClick={onClick}>
+    <StyledIconButton
+      color={color}
+      onClick={(e) => {
+        e.preventDefault()
+        onClick && onClick(e)
+      }}
+      data-testid={dataTestId}
+    >
       {children}
     </StyledIconButton>
   )

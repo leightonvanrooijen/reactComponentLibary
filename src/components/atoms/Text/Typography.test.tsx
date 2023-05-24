@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 import { Typography } from "./Typography"
 import { ReactNode } from "react"
-import { TestProvider } from "../../../common/testUtils/TestProvider"
+import { MockProvider } from "../../../packages/test/MockProvider"
 
 export type ProviderProps = {
   withTheme: boolean
@@ -10,9 +10,9 @@ export type ProviderProps = {
 
 const setUp = {
   basic: (text: string) => (
-    <TestProvider withTheme>
+    <MockProvider withTheme>
       <Typography>{text}</Typography>
-    </TestProvider>
+    </MockProvider>
   ),
 }
 

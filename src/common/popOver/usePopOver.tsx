@@ -42,6 +42,7 @@ const setFloatToRefWidth = <RT extends Element>(
   float.current.style.width = `${width}px`
 }
 
+// TODO update the position when the ref changes position
 export const usePopOver = <RT extends Element>({ position = "bottom", matchWidths = true }: UsePopOverProps = {}) => {
   let ref: MutableRefObject<RT | null> = useRef(null)
   let float: MutableRefObject<HTMLElement | null> = useRef(null)
@@ -52,16 +53,19 @@ export const usePopOver = <RT extends Element>({ position = "bottom", matchWidth
   useOnOpen(float, open)
   useUpdatePositionOnScroll({ reference: ref, float, position })
 
-  const floating = useCallback((node: HTMLElement | null) => {
-    if (!node) return
-    float.current = node
+  const floating = useCallback(
+    (node: HTMLElement | null) => {
+      if (!node) return
+      float.current = node
 
-    updateFloatPosition({ reference: ref, float, position })
+      updateFloatPosition({ reference: ref, float, position })
 
-    if (matchWidths) {
-      setFloatToRefWidth(ref, float)
-    }
-  }, [])
+      if (matchWidths) {
+        setFloatToRefWidth(ref, float)
+      }
+    },
+    [matchWidths, position],
+  )
 
   const reference = useCallback((node: RT | null) => {
     if (!node) return

@@ -12,7 +12,7 @@ describe("filterOptions", () => {
   it("if there is a sub label it includes it in the filtering", () => {
     const options = fakeOptions(5)
 
-    const filteredOptions = filterOptions(options, options[0].subLabel)
+    const filteredOptions = filterOptions(options, options[0].subLabel ?? "")
 
     expect(filteredOptions).toEqual([options[0]])
   })
